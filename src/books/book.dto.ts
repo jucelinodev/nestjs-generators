@@ -1,4 +1,19 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsNumberString,
+} from 'class-validator';
+
+export class ListBookQueryParam {
+  @IsOptional()
+  @IsNumberString()
+  page?: number;
+
+  @IsOptional()
+  @IsNumberString()
+  pageSize?: number;
+}
 
 export class CreateBookDto {
   @IsNotEmpty()

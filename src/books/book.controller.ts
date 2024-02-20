@@ -12,15 +12,17 @@ import {
 import { BookService } from './book.service';
 import { PaginatedData } from '../shared/base/base.types';
 import { Book } from './book.types';
-import { CreateBookDto, UpdateBookDto } from './book.dto';
+import { CreateBookDto, ListBookQueryParam, UpdateBookDto } from './book.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Books')
 @Controller('books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get()
   async list(
-    @Query() queryParams: { page: string; pageSize: string },
+    @Query() queryParams: ListBookQueryParam,
   ): Promise<PaginatedData<Book>> {
     const page = Number(queryParams.page) || 1;
     const pageSize = Number(queryParams.pageSize) || 25;
