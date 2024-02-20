@@ -10,7 +10,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { BookService } from './book.service';
-import { PaginatedData } from 'src/base/base.types';
+import { PaginatedData } from '../shared/base/base.types';
 import { Book } from './book.types';
 import { CreateBookDto, UpdateBookDto } from './book.dto';
 

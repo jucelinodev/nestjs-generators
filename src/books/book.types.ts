@@ -1,4 +1,4 @@
-import { BaseType } from '../base/base.types';
+import { BaseType } from '../shared/base/base.types';
 
 export type Book = BaseType & {
   name: string;

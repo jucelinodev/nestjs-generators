@@ -1,4 +1,4 @@
-import { BaseRepositoryInMemory } from 'src/base/base.repository';
+import { BaseRepositoryInMemory } from '../shared/base/base.repository';
 import { Book } from './book.types';
 import { Injectable } from '@nestjs/common';
 
