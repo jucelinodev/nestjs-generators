@@ -5,7 +5,7 @@
 [x] Adicionar Swagger
 [x] Adicionar Helmet
 [x] Adicionar Compression
-[] Adicionar .ENV Service
+[x] Adicionar .ENV Service
 [] Refatorar para utilizar MongoDB
 [] Automatizar Criação de REST API
 [] Dockerizar a api
