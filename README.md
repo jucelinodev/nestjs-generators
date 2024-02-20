@@ -2,8 +2,10 @@
 
 [x] Adicionar o path "api"
 [x] Criar Controler "Helth Check"
-[] Adicionar Swagger
+[x] Adicionar Swagger
 [] Adicionar Helmet
+[] Adicionar Compression
 [] Adicionar .ENV Service
-[] Automatizar Criação do CRUD
+[] Refatorar para utilizar MongoDB
+[] Automatizar Criação de REST API
 [] Dockerizar a api

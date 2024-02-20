@@ -13,13 +13,14 @@ import { BookService } from './book.service';
 import { PaginatedData } from '../shared/base/base.types';
 import { Book } from './book.types';
 import { CreateBookDto, ListBookQueryParam, UpdateBookDto } from './book.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Books')
 @Controller('books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
+  @ApiOperation({ summary: 'Endpoint to list and page Books' })
   @Get()
   async list(
     @Query() queryParams: ListBookQueryParam,
@@ -29,17 +30,20 @@ export class BookController {
     return await this.bookService.list(page, pageSize);
   }
 
+  @ApiOperation({ summary: 'Endpoint to find Book by id' })
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Book> {
     return await this.bookService.findById(id);
   }
 
+  @ApiOperation({ summary: 'Endpoint to create Book' })
   @HttpCode(201)
   @Post()
   async create(@Body() body: CreateBookDto): Promise<Book> {
     return await this.bookService.create(body);
   }
 
+  @ApiOperation({ summary: 'Endpoint to update Book' })
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -48,12 +52,14 @@ export class BookController {
     return await this.bookService.update(id, body);
   }
 
+  @ApiOperation({ summary: 'Endpoint to "soft delete" Book' })
   @HttpCode(204)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
     return await this.bookService.delete(id);
   }
 
+  @ApiOperation({ summary: 'Endpoint to "recover" Book' })
   @Get('/recover/:id')
   async recover(@Param('id') id: string): Promise<Book> {
     return await this.bookService.recover(id);
