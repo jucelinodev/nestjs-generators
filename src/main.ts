@@ -1,12 +1,17 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import helmet from 'helmet';
+import * as compression from 'compression';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('/api');
+  app.use(helmet());
+  app.use(compression());
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('/api');
+  app.enableCors();
 
   const configSwagger = new DocumentBuilder()
     .setTitle('API example')
