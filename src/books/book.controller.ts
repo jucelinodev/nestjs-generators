@@ -9,10 +9,10 @@ import {
   Query,
   HttpCode,
 } from '@nestjs/common';
-import { BookService } from './book.service';
-import { PaginatedData } from '../shared/base/base.types';
-import { CreateBookDto, ListBookQueryParam, UpdateBookDto } from './book.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PaginatedData } from '../shared/base/rest/rest.types';
+import { CreateBookDto, ListBookQueryParam, UpdateBookDto } from './book.dto';
+import { BookService } from './book.service';
 import { IBook } from './book.model';
 
 @ApiTags('Books')

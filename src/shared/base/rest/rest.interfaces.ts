@@ -1,6 +1,6 @@
-import { PaginatedData } from './base.types';
+import { PaginatedData } from './rest.types';
 
-export interface IBaseRepository<T> {
+export interface IRestRepository<T> {
   list(page: number, pageSize: number): Promise<PaginatedData<T>>;
   findById(id: string): Promise<T> | undefined;
   create(data: any): Promise<T>;

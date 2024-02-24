@@ -1,8 +1,8 @@
-import { IBaseRepository } from './base.interfaces';
-import { PaginatedData } from './base.types';
+import { IRestRepository } from './rest.interfaces';
+import { PaginatedData } from './rest.types';
 import { Model } from 'mongoose';
 
-export abstract class BaseRepositoryMongo<T> implements IBaseRepository<T> {
+export abstract class RestRepositoryMongo<T> implements IRestRepository<T> {
   constructor(private readonly model: Model<T>) {}
 
   async list(page: number, pageSize: number): Promise<PaginatedData<T>> {

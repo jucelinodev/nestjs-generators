@@ -1,9 +1,9 @@
-import { BaseRepositoryMongo } from '../shared/base/base.repository';
+import { RestRepositoryMongo } from '../shared/base/rest/rest.repository';
 import { Book, IBook } from './book.model';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class BookRepository extends BaseRepositoryMongo<IBook> {
+export class BookRepository extends RestRepositoryMongo<IBook> {
   constructor() {
     super(Book);
   }
