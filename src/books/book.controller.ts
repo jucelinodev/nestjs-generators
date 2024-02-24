@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { PaginatedData } from '../shared/base/base.types';
-import { Book } from './book.types';
 import { CreateBookDto, ListBookQueryParam, UpdateBookDto } from './book.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { IBook } from './book.model';
 
 @ApiTags('Books')
 @Controller('books')
@@ -24,7 +24,7 @@ export class BookController {
   @Get()
   async list(
     @Query() queryParams: ListBookQueryParam,
-  ): Promise<PaginatedData<Book>> {
+  ): Promise<PaginatedData<IBook>> {
     const page = Number(queryParams.page) || 1;
     const pageSize = Number(queryParams.pageSize) || 25;
     return await this.bookService.list(page, pageSize);
@@ -32,14 +32,14 @@ export class BookController {
 
   @ApiOperation({ summary: 'Endpoint to find Book by id' })
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<Book> {
+  async findById(@Param('id') id: string): Promise<IBook> {
     return await this.bookService.findById(id);
   }
 
   @ApiOperation({ summary: 'Endpoint to create Book' })
   @HttpCode(201)
   @Post()
-  async create(@Body() body: CreateBookDto): Promise<Book> {
+  async create(@Body() body: CreateBookDto): Promise<IBook> {
     return await this.bookService.create(body);
   }
 
@@ -48,7 +48,7 @@ export class BookController {
   async update(
     @Param('id') id: string,
     @Body() body: UpdateBookDto,
-  ): Promise<Book> {
+  ): Promise<IBook> {
     return await this.bookService.update(id, body);
   }
 
@@ -61,7 +61,7 @@ export class BookController {
 
   @ApiOperation({ summary: 'Endpoint to "recover" Book' })
   @Get('/recover/:id')
-  async recover(@Param('id') id: string): Promise<Book> {
+  async recover(@Param('id') id: string): Promise<IBook> {
     return await this.bookService.recover(id);
   }
 }
