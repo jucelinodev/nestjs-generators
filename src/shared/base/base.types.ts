@@ -4,10 +4,3 @@ export type PaginatedData<T> = {
   page: number;
   pageSize: number;
 };
-
-export type BaseType = {
-  id: string;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
-};

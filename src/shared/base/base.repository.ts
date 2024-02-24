@@ -1,81 +1,60 @@
-import { v4 as uuidv4 } from 'uuid';
 import { IBaseRepository } from './base.interfaces';
-import { BaseType, PaginatedData } from './base.types';
+import { PaginatedData } from './base.types';
+import { Model } from 'mongoose';
 
-export abstract class BaseRepositoryInMemory<T extends BaseType>
-  implements IBaseRepository<T>
-{
-  private inMemory: T[] = [];
+export abstract class BaseRepositoryMongo<T> implements IBaseRepository<T> {
+  constructor(private readonly model: Model<T>) {}
 
-  private shouldInclude(item: T): boolean {
-    return !item.deleted_at;
-  }
+  async list(page: number, pageSize: number): Promise<PaginatedData<T>> {
+    const skip = (page - 1) * pageSize;
+    const total = await this.model.countDocuments({ deleted_at: null });
+    const data = await this.model
+      .find({ deleted_at: null })
+      .skip(skip)
+      .limit(pageSize);
 
-  list(page: number, pageSize: number): PaginatedData<T> {
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize;
-    const filteredItems = this.inMemory.filter((item) =>
-      this.shouldInclude(item),
-    );
-    const data = filteredItems.slice(start, end);
-    const total = filteredItems.length;
     return {
       data,
       total,
       page,
-      pageSize,
+      pageSize: data.length,
     };
   }
 
-  findById(id: string): T | undefined {
-    return this.inMemory.find(
-      (item) => item.id === id && this.shouldInclude(item),
-    );
+  async findById(id: string): Promise<T | undefined> {
+    return await this.model.findOne({ _id: id, deleted_at: null });
   }
 
-  create(item: Omit<T, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>): T {
-    const newItem = {
-      id: uuidv4(),
-      created_at: new Date(),
-      updated_at: new Date(),
+  async create(data: any): Promise<T> {
+    const newItem = new this.model({
       deleted_at: null,
-      ...item,
-    } as T;
-    this.inMemory.push(newItem);
-    return newItem;
+      ...data,
+    } as T);
+    return (await newItem.save()).toObject();
   }
 
-  update(id: string, updatedFields: Partial<Omit<T, 'id'>>): T {
-    const index = this.inMemory.findIndex(
-      (item) => item.id === id && this.shouldInclude(item),
+  async update(id: string, updatedFields: any): Promise<T> {
+    const updated = await this.model.findOneAndUpdate(
+      { _id: id, deleted_at: null },
+      { ...updatedFields, updated_at: new Date() },
+      { new: true },
     );
-    if (index !== -1) {
-      const updated = {
-        ...this.inMemory[index],
-        ...updatedFields,
-        updated_at: new Date(),
-      };
-      this.inMemory[index] = updated;
-      return updated;
-    }
+    return updated;
   }
 
-  delete(id: string): void {
-    const index = this.inMemory.findIndex(
-      (item) => item.id === id && this.shouldInclude(item),
+  async delete(id: string): Promise<void> {
+    await this.model.findOneAndUpdate(
+      { _id: id, deleted_at: null },
+      { deleted_at: new Date() },
     );
-    if (index !== -1) {
-      this.inMemory[index].deleted_at = new Date();
-    }
   }
 
-  recover(id: string): T {
-    const index = this.inMemory.findIndex(
-      (item) => item.id === id && item.deleted_at !== null,
+  async recover(id: string): Promise<T> {
+    const recovered = await this.model.findOneAndUpdate(
+      { _id: id, deleted_at: { $ne: null } },
+      { deleted_at: null },
+      { new: true },
     );
-    if (index !== -1) {
-      this.inMemory[index].deleted_at = null;
-      return this.inMemory[index];
-    }
+    return recovered;
   }
 }

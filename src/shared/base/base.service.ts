@@ -1,31 +1,27 @@
 import { NotFoundException } from '@nestjs/common';
-import { BaseRepositoryInMemory } from './base.repository';
-import { BaseType, PaginatedData } from './base.types';
+import { BaseRepositoryMongo } from './base.repository';
+import { PaginatedData } from './base.types';
 
-export abstract class BaseService<T extends BaseType> {
-  constructor(private readonly baseRepository: BaseRepositoryInMemory<T>) {}
+export abstract class BaseService<T> {
+  constructor(private readonly baseRepository: BaseRepositoryMongo<T>) {}
 
   async list(page: number, pageSize: number): Promise<PaginatedData<T>> {
     return this.baseRepository.list(page, pageSize);
   }
 
   async findById(id: string): Promise<T> {
-    const item = this.baseRepository.findById(id);
+    const item = await this.baseRepository.findById(id);
     if (!item) {
-      throw new NotFoundException(
-        'não foi encontrado nenhum objeto com esse id',
-      );
+      throw new NotFoundException();
     }
     return item;
   }
 
-  async create(
-    item: Omit<T, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>,
-  ): Promise<T> {
-    return this.baseRepository.create(item);
+  async create(data: any): Promise<T> {
+    return this.baseRepository.create(data);
   }
 
-  async update(id: string, updatedFields: Partial<Omit<T, 'id'>>): Promise<T> {
+  async update(id: string, updatedFields: any): Promise<T> {
     await this.findById(id);
     return this.baseRepository.update(id, updatedFields);
   }
