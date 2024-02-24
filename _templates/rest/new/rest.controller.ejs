@@ -1,0 +1,71 @@
+---
+to: src/modules/<%=name%>/<%=name%>.controller.ts
+---
+
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  HttpCode,
+} from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PaginatedData } from '../../shared/base/rest/rest.types';
+import { Create<%=Name%>Dto, List<%=Name%>QueryParam, Update<%=Name%>Dto } from './<%=name%>.dto';
+import { <%=Name%>Service } from './<%=name%>.service';
+import { I<%=Name%> } from './<%=name%>.model';
+
+@ApiTags('<%=h.inflection.pluralize(Name)%>')
+@Controller('<%=h.inflection.pluralize(name)%>')
+export class <%=Name%>Controller {
+  constructor(private readonly <%=name%>Service: <%=Name%>Service) {}
+
+  @ApiOperation({ summary: 'Endpoint to list and page <%= h.inflection.pluralize(name)%>' })
+  @Get()
+  async list(
+    @Query() queryParams: List<%=Name%>QueryParam,
+  ): Promise<PaginatedData<I<%=Name%>>> {
+    const page = Number(queryParams.page) || 1;
+    const pageSize = Number(queryParams.pageSize) || 25;
+    return await this.<%=name%>Service.list(page, pageSize);
+  }
+
+  @ApiOperation({ summary: 'Endpoint to find <%=name%> by id' })
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<I<%=Name%>> {
+    return await this.<%=name%>Service.findById(id);
+  }
+
+  @ApiOperation({ summary: 'Endpoint to create <%=name%>' })
+  @HttpCode(201)
+  @Post()
+  async create(@Body() body: Create<%=Name%>Dto): Promise<I<%=Name%>> {
+    return await this.<%=name%>Service.create(body);
+  }
+
+  @ApiOperation({ summary: 'Endpoint to update <%=name%>' })
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() body: Update<%=Name%>Dto,
+  ): Promise<I<%=Name%>> {
+    return await this.<%=name%>Service.update(id, body);
+  }
+
+  @ApiOperation({ summary: 'Endpoint to "soft delete" <%=name%>' })
+  @HttpCode(204)
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<void> {
+    return await this.<%=name%>Service.delete(id);
+  }
+
+  @ApiOperation({ summary: 'Endpoint to "recover" <%=name%>' })
+  @Get('/recover/:id')
+  async recover(@Param('id') id: string): Promise<I<%=Name%>> {
+    return await this.<%=name%>Service.recover(id);
+  }
+}

@@ -1,0 +1,14 @@
+---
+to: src/modules/<%=name%>/<%=name%>.repository.ts
+---
+
+import { Injectable } from '@nestjs/common';
+import { RestRepositoryMongo } from '../../shared/base/rest/rest.repository';
+import { <%=Name%>, I<%=Name%> } from './<%=name%>.model';
+
+@Injectable()
+export class <%=Name%>Repository extends RestRepositoryMongo<I<%=Name%>> {
+  constructor() {
+    super(<%=Name%>);
+  }
+}

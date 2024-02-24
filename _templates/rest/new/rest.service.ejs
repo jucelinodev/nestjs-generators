@@ -1,0 +1,15 @@
+---
+to: src/modules/<%=name%>/<%=name%>.service.ts
+---
+
+import { Injectable } from '@nestjs/common';
+import { RestService } from '../../shared/base/rest/rest.service';
+import { I<%=Name%> } from './<%=name%>.model';
+import { <%=Name%>Repository } from './<%=name%>.repository';
+
+@Injectable()
+export class <%=Name%>Service extends RestService<I<%=Name%>> {
+  constructor(private readonly <%=name%>Repository: <%=Name%>Repository) {
+    super(<%=name%>Repository);
+  }
+}

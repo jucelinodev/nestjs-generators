@@ -1,0 +1,40 @@
+---
+to: src/modules/<%=name%>/<%=name%>.dto.ts
+---
+
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsNumberString,
+} from 'class-validator';
+
+export class List<%=Name%>QueryParam {
+  @IsOptional()
+  @IsNumberString()
+  page?: number;
+
+  @IsOptional()
+  @IsNumberString()
+  pageSize?: number;
+}
+
+export class Create<%=Name%>Dto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+}
+
+export class Update<%=Name%>Dto {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  description: string;
+}

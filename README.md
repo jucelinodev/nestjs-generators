@@ -6,6 +6,6 @@
 [x] Adicionar Helmet
 [x] Adicionar Compression
 [x] Adicionar .ENV Service
-[] Refatorar para utilizar MongoDB
-[] Automatizar Criação de REST API
+[x] Refatorar para utilizar MongoDB
+[x] Automatizar Criação de REST API
 [] Dockerizar a api

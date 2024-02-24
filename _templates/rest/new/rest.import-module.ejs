@@ -1,0 +1,8 @@
+---
+to: src/app.module.ts
+inject: true
+skip_if: import { <%= Name %>Module } from './modules/<%= name %>/<%= name %>.module'
+after: ''
+---
+
+import { <%= Name %>Module } from './modules/<%= name %>/<%= name %>.module';
